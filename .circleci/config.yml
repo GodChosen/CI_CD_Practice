@@ -12,14 +12,14 @@ jobs:
     steps:
       - run: echo '[all]' > inventory
       - persist_to_workspace:
-          root: /home/godchosen/ansible-practice/node.js
+          root: ~/
           paths:
-            - inventory
+            - home/godchosen/ansible-practice/node.js/inventory
   add_hosts_to_inventory_file:
     <<: *containerenvironment
     steps:
       - attach_workspace:
-          at: /
+          at: ~/
       - run: echo "aws ec2 describe-instances --query 'Reservations[*].Instances[*].PublicIpAddress' --filters 'Name=tag:Project','Values=udacity' --output text" >> /home/godchosen/ansible-practice/node.js/inventory
       
 # Invoke jobs via workflows
