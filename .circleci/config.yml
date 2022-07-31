@@ -12,9 +12,9 @@ jobs:
     steps:
       - run: echo '[all]' > inventory
       - persist_to_workspace:
-          root: /
+          root: /home/godchosen/ansible-practice/node.js
           paths:
-            - home/godchosen/ansible-practice/node.js/inventory
+            - /home/godchosen/ansible-practice/node.js/inventory
   add_hosts_to_inventory_file:
     <<: *containerenvironment
     steps:
