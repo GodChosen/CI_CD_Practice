@@ -11,6 +11,7 @@ jobs:
     <<: *containerenvironment
     # working_directory: ~/home/godchosen/ansible-practice/
     steps:
+      - checkout
       - run: echo '[all]' > inventory
       - persist_to_workspace:
           root: ~/
@@ -19,6 +20,7 @@ jobs:
   add_hosts_to_inventory_file:
     <<: *containerenvironment
     steps:
+      - checkout
       - attach_workspace:
           at: ~/
       - run: echo "aws ec2 describe-instances --query 'Reservations[*].Instances[*].PublicIpAddress' --filters 'Name=tag:Project','Values=udacity' --output text" >> ansible-practice/CI_CD_Practice/inventory
