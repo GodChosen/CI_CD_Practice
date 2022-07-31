@@ -14,7 +14,7 @@ jobs:
       - persist_to_workspace:
           root: /home/godchosen/ansible-practice/node.js
           paths:
-            - /home/godchosen/ansible-practice/node.js/inventory
+            - inventory
   add_hosts_to_inventory_file:
     <<: *containerenvironment
     steps:
