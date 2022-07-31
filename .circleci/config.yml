@@ -1,0 +1,32 @@
+defaults: &containerenvironment
+  docker:
+    - image: circleci/node:13.8.0
+
+# define the version of Circle CI to use
+version: 2.1
+  
+# Define a job to be invoked later in a workflow.
+jobs:
+  create_inventory_file:
+    <<: *containerenvironment
+    steps:
+		  - run: echo '[all]' > inventory
+      - persist_to_workspace:
+          root: /
+          paths:
+            - /home/godchosen/ansible-practice/node.js/inventory
+  add_hosts_to_inventory_file:
+    <<: *containerenvironment
+    steps:
+      - attach_workspace:
+          at: /
+			- run: echo "aws ec2 describe-instances --query 'Reservations[*].Instances[*].PublicIpAddress' --filters 'Name=tag:Project','Values=udacity' --output text" >> /home/godchosen/ansible-practice/node.js/inventory
+      
+# Invoke jobs via workflows
+workflows:
+  generate_inventory_file:
+    jobs:
+      - create_inventory_file
+      - add_hosts_to_inventory_file:
+          requires:
+            - create_inventory_file
