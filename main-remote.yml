@@ -1,0 +1,20 @@
+---
+# Exercise to setup webserver in an EC2 Instance
+- name: Setup webser in an EC2 instance
+
+  hosts: all
+  user: ubuntu
+  become: true
+  become_method: sudo
+  become_user: root
+  roles:
+    - setup
+
+
+
+
+
+
+
+
+
