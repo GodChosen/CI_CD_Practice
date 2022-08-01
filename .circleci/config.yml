@@ -15,7 +15,7 @@ jobs:
       - run:
           name: Create inventory file
           command: |
-            ./godchosen/ansible-practice/CI_CD_Practice/create_inventory_file.sh
+            .godchosen/ansible-practice/CI_CD_Practice/create_inventory_file.sh
       
 # Invoke jobs via workflows
 workflows:
