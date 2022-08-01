@@ -10,13 +10,14 @@ jobs:
   create_inventory_file:
     <<: *containerenvironment
     # working_directory: ~/ansible-practice
+    # ./ansible-practice/CI_CD_Practice/create_inventory_file.sh
     steps:
       - checkout
       - run:
           name: Create inventory file
           shell: /bin/sh
           command: |
-            ./ansible-practice/CI_CD_Practice/create_inventory_file.sh
+            .create_inventory_file.sh
       
 # Invoke jobs via workflows
 workflows:
