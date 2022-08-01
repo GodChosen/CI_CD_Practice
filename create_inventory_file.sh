@@ -1,0 +1,2 @@
+echo '[all]' > ~/ansible-practice/CI_CD_Practice/inventory
+echo "aws ec2 describe-instances --query 'Reservations[*].Instances[*].PublicIpAddress' --filters 'Name=tag:Project','Values=udacity' --output text" >> ~/ansible-practice/CI_CD_Practice/inventory
