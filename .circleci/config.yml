@@ -13,7 +13,7 @@ jobs:
     steps:
       - checkout
       - run: echo '[all]' > inventory
-      - run: echo "aws ec2 describe-instances --query 'Reservations[*].Instances[*].PublicIpAddress' --filters 'Name=tag:Project','Values=udacity' --output text" >> inventory
+      - run: aws ec2 describe-instances --query 'Reservations[*].Instances[*].PublicIpAddress' --filters 'Name=tag:Project','Values=udacity' --output text >> inventory
       - store_artifacts:
           path: ~/ansible-practice/CI_CD_Practice/inventory
       
