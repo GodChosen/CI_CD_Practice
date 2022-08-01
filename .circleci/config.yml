@@ -9,7 +9,7 @@ version: 2.1
 jobs:
   create_inventory_file:
     <<: *containerenvironment
-    working-directory: ~/home
+    working_directory: ~/home
     steps:
       - checkout
       - run:
