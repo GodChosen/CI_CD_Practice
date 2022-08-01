@@ -1,0 +1,25 @@
+defaults: &containerenvironment
+  docker:
+    - image: amazon/aws-cli
+
+# define the version of Circle CI to use
+version: 2.1
+  
+# Define a job to be invoked later in a workflow.
+jobs:
+  create_inventory_file:
+    <<: *containerenvironment
+    working_directory: ~/ansible-practice/CI_CD_Practice
+    steps:
+      - checkout
+      - run: echo '[all]' > inventory
+      - run: echo "aws ec2 describe-instances --query 'Reservations[*].Instances[*].PublicIpAddress' --filters 'Name=tag:Project','Values=udacity' --output text" >> inventory
+      - store_artifacts:
+          path: ~/ansible-practice/CI_CD_Practice/inventory
+      
+# Invoke jobs via workflows
+workflows:
+  generate_inventory_file:
+    jobs:
+      - create_inventory_file
+  
