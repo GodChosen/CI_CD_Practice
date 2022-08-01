@@ -18,9 +18,8 @@ jobs:
           command: |
             chmod 777 create_inventory_file.sh
             ./create_inventory_file.sh
-            cp inventory /tmp
-      - store_artifacts:
-          path: /tmp/inventory
+      #- store_artifacts:
+      #    path: /tmp/inventory
       
 # Invoke jobs via workflows
 workflows:
