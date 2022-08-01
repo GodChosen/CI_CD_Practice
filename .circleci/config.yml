@@ -11,7 +11,7 @@ jobs:
     <<: *containerenvironment
     working_directory: /tmp
     steps:
-      - checkout
+      # - checkout
       - run:
           name: Create inventory file
           shell: /bin/sh
