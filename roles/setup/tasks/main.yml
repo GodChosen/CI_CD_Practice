@@ -1,29 +1,28 @@
 ---
-- name: "Update apt packages"
-  become: true
-  become_method: sudo
+- name: "update apt packages"
+  become: yes
   apt:
     update_cache: yes
 
-- name: "Remove unwanted dependences"
-  become: true
-  apt:
-    autoremove: yes
-
-- name: "Upgrade apt packages"
-  become: true
+- name: "upgrade packages"
+  become: yes
   apt:
     upgrade: yes
 
+- name: "Remove unwanted dependences"
+  become: yes
+  apt:
+    autoremove: yes
+
 - name: "Install needed dependencies"
-  become: true
+  become: yes
   apt:
     name: ["nodejs", "npm"]
     state: latest
     update_cache: yes
 
 - name: "install pm2"
-  become: true
+  become: yes
   npm:
     name: pm2
     global: yes
@@ -43,7 +42,3 @@
 - name: "Executing node"
   shell: |
     pm2 start ~/web/index.js -f
-
-
-
-
