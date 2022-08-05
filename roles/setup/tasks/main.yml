@@ -14,12 +14,12 @@
   apt:
     autoremove: yes
 
-- name: "Install needed dependencies"
-  become: yes
-  apt:
-    name: ["nodejs", "npm"]
-    state: latest
-    update_cache: yes
+# - name: "Install needed dependencies"
+#   become: yes
+#   apt:
+#     name: ["nodejs", "npm"]
+#     state: latest
+#     update_cache: yes
 
 # - name: "install pm2"
 #   become: yes
@@ -29,16 +29,25 @@
 #     production: yes
 #     state: present
 
-- name: "install and upgrade pm2"
+- name: "add apt key for nodesource"
   become: yes
-  npm:
-    name: "{{ item }}"
-    global: yes
-    state: latest
-  # when: ((['init', 'processes', 'upgrade'] | intersect(flags)) | length > 0)
-  with_items:
-    - pm2
+  apt_repository:
+    repo: "deb https://deb.nodesource.com/node_0.10 {{ ansible_distribution_release }} main"
+    update_cache: yes
 
+- name: install nodejs
+  apt: name=nodejs
+
+- name: install NPM
+  shell: npm i
+  args:
+    chdir: /home/ubuntu
+
+- name: install pm2
+  npm:
+    name: pm2
+    global: yes 
+  
 - name: "Create directory"
   file:
     path: ~/web
