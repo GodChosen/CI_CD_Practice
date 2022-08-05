@@ -38,8 +38,8 @@
 - name: install nodejs
   apt: name=nodejs
 
-- name: install NPM
-  shell: npm i -g
+- name: install npm
+  shell: npm i
   state: latest
   args:
     chdir: /home/ubuntu
