@@ -12,7 +12,7 @@
 - name: "Remove unwanted dependences"
   become: yes
   apt:
-    autoremovee: yes
+    autoremove: yes
 
 - name: "Install needed dependencies"
   become: yes

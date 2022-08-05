@@ -1,27 +1,43 @@
-defaults: &containerenvironment
-  docker:
-    - image: amazon/aws-cli
-
-# define the version of Circle CI to use
+# Use the latest 2.1 version of CircleCI pipeline process engine.
 version: 2.1
-  
-# Define a job to be invoked later in a workflow.
+
+# Define the orb that would be used
+orbs: 
+  awscli: circleci/aws-cli@2.0.3
+
+# Define the jobs
 jobs:
-  create_inventory_file:
-    <<: *containerenvironment
-    working_directory: ~/ansible-practice/CI_CD_Practice
+  # create_infrastructure: 
+  #   docker:
+  #   - image: amazon/aws-cli
+  #   steps:
+  #     - checkout
+  #     - run:
+  #         name: Create Cloudformation Stack
+  #         command: |
+  #           aws cloudformation deploy \
+  #             --template-file template.yml \
+  #             --stack-name myStack-${CIRCLE_WORKFLOW_ID:0:5} \
+  #             --region us-east-1
+  configure_infrastructure: 
+    docker:
+    - image: python:3.7-alpine3-11
     steps:
       - checkout
-      - run: echo '[all]' > inventory
-      - run: aws configure set aws_access_key_id ${aws_access_key_id}
-      - run: aws configure set aws_secret_access_key ${aws_secret_access_key}
-      - run: aws ec2 describe-instances --query 'Reservations[*].Instances[*].PublicIpAddress' --region us-east-1 --filters 'Name=tag:Project','Values=udacity' --output text >> inventory
-      - store_artifacts:
-          path: ~/ansible-practice/CI_CD_Practice/inventory
-      
+      - add_ssh_keys:
+          fingerprints: [28:a5:a3:33:aa:9b:bd:92:3a:86:8c:0d:ac:17:0e:9f]
+      - run:
+          name: Install Ansible
+          command: |
+            apk add --update Ansible
+      - run:
+          name: Run Playbook and Configure Server
+          command: |
+            ansible-playbook -i inventory main-remote.yml
 # Invoke jobs via workflows
+
 workflows:
-  generate_inventory_file:
+  my-workflow:
     jobs:
-      - create_inventory_file
-  
+      # - create_infrastructure
+      - configure_infrastructure
