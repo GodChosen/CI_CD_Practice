@@ -40,7 +40,6 @@
 
 - name: install npm
   shell: npm i
-  global: yes
   args:
     chdir: /home/ubuntu
 
