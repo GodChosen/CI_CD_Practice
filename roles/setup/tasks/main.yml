@@ -34,7 +34,7 @@
   npm:
     name: "{{ item }}"
     global: yes
-  #  state: present
+    state: latest
   # when: ((['init', 'processes', 'upgrade'] | intersect(flags)) | length > 0)
   with_items:
     - pm2
