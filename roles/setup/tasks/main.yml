@@ -35,7 +35,7 @@
     name: "{{ item }}"
     global: yes
     state: present
-  when: ((['init', 'processes', 'upgrade'] | intersect(flags)) | length > 0)
+  # when: ((['init', 'processes', 'upgrade'] | intersect(flags)) | length > 0)
   with_items:
     - pm2
     - pmx
