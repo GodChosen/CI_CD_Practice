@@ -39,7 +39,8 @@
   apt: name=nodejs
 
 - name: install NPM
-  shell: npm i
+  shell: npm i -g
+  state: latest
   args:
     chdir: /home/ubuntu
 
