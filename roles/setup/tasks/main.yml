@@ -14,46 +14,20 @@
   apt:
     autoremove: yes
 
-# - name: "Install needed dependencies"
-#   become: yes
-#   apt:
-#     name: ["nodejs", "npm"]
-#     state: latest
-#     update_cache: yes
-
-# - name: "install pm2"
-#   become: yes
-#   npm:
-#     name: pm2
-#     global: yes
-#     production: yes
-#     state: present
-
-- name: "add apt key for nodesource"
+- name: "Install needed dependencies"
   become: yes
-  apt_repository:
-    repo: "deb https://deb.nodesource.com/node_0.10 {{ ansible_distribution_release }} main"
+  apt:
+    name: ["nodejs", "npm"]
+    state: latest
     update_cache: yes
 
-- name: install nodejs
-  apt: name=nodejs
-
-- name: install npm
-  shell: npm i
-  args:
-    chdir: /home/ubuntu
-
-- name: update npm global packages
-  npm:
-    name: '{{ item }}'
-    global: yes
-    state: latest
-  with_items: '{{ npm }}'
-
-- name: install pm2
+- name: "install pm2"
+  become: yes
   npm:
     name: pm2
-    global: yes 
+    global: yes
+    production: yes
+    state: present
   
 - name: "Create directory"
   file:
