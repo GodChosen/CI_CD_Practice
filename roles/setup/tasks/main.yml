@@ -1,18 +1,19 @@
 ---
 - name: "Update apt packages"
   become: true
+  become_method: sudo
   apt:
     update_cache: yes
-
-- name: "Upgrade apt packages"
-  become: true
-  apt:
-    upgrade: yes
 
 - name: "Remove unwanted dependences"
   become: true
   apt:
     autoremove: yes
+
+- name: "Upgrade apt packages"
+  become: true
+  apt:
+    upgrade: yes
 
 - name: "Install needed dependencies"
   become: true
@@ -21,7 +22,7 @@
     state: latest
     update_cache: yes
 
-- name: "Install pm2"
+- name: "install pm2"
   become: true
   npm:
     name: pm2
