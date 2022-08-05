@@ -34,11 +34,10 @@
   npm:
     name: "{{ item }}"
     global: yes
-    state: present
+  #  state: present
   # when: ((['init', 'processes', 'upgrade'] | intersect(flags)) | length > 0)
   with_items:
     - pm2
-    - pmx
 
 - name: "Create directory"
   file:
