@@ -19,25 +19,45 @@ jobs:
   #             --template-file template.yml \
   #             --stack-name myStack-${CIRCLE_WORKFLOW_ID:0:5} \
   #             --region us-east-1
-  configure_infrastructure: 
+  # configure_infrastructure: 
+  #   docker:
+  #   - image: python:3.7-alpine3.11
+  #   steps:
+  #     - checkout
+  #     - add_ssh_keys:
+  #         fingerprints: [28:a5:a3:33:aa:9b:bd:92:3a:86:8c:0d:ac:17:0e:9f]
+  #     - run:
+  #         name: Install Ansible
+  #         command: |
+  #           apk add --update ansible
+  #     - run:
+  #         name: Run Playbook and Configure Server
+  #         command: |
+  #           ansible-playbook -i inventory main-remote.yml
+
+  smoke_test:
     docker:
-    - image: python:3.7-alpine3.11
+      - image: alpine:latest
     steps:
-      - checkout
-      - add_ssh_keys:
-          fingerprints: [28:a5:a3:33:aa:9b:bd:92:3a:86:8c:0d:ac:17:0e:9f]
+      - run: apk add --update curl
       - run:
-          name: Install Ansible
+          name: smoke test
           command: |
-            apk add --update ansible
-      - run:
-          name: Run Playbook and Configure Server
-          command: |
-            ansible-playbook -i inventory main-remote.yml
+            URL="https://blog.udacity.com/"
+            # Test if website exists
+            if curl -s --head ${URL}
+            then
+              return 0
+            else
+              return 1
+            fi
+
+
 # Invoke jobs via workflows
 
 workflows:
   my-workflow:
     jobs:
       # - create_infrastructure
-      - configure_infrastructure
+      # - configure_infrastructure
+      - smoke_test
