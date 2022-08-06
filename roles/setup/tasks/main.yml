@@ -14,38 +14,34 @@
   apt:
     autoremove: yes
 
-# - name: "Install needed dependencies"
-#   become: yes
-#   apt:
-#     name: ["nodejs", "npm"]
-#     state: latest
-#     update_cache: yes
-
-- name: add noderesources add_ssh_keys
+- name: "Install needed dependencies"
   become: yes
-  apt_key:
-    url: https://deb.nodesource.com/gpgkey/nodesource.gpg.key
-    state: present
-
-- name: add nodesource apt sources
-  become: yes
-  apt_repository:
-    repo: '{{ item }}'
-    state: present
-  with_items:
-    - 'deb https://deb.nodesource.com/node_12.x xenial main'
-    - 'deb-src https://deb.nodesource.com/node_12.x xenial main'
-
-- name: install nodejs and npm
-  become: yes
-  apt: 
-    name: '{{ item }}'
+  apt:
+    name: ["nodejs", "npm"]
     state: latest
     update_cache: yes
-  with_items:
-    - nodejs
-    - nodejs-legacy
-    - npm
+
+# - name: add noderesources add_ssh_keys
+#   become: yes
+#   apt_key:
+#     url: https://deb.nodesource.com/gpgkey/nodesource.gpg.key
+#     state: present
+
+# - name: add nodesource apt sources
+#   become: yes
+#   apt_repository:
+#     repo: '{{ item }}'
+#     state: present
+#   with_items:
+#     - 'deb https://deb.nodesource.com/node_12.x xenial main'
+#     - 'deb-src https://deb.nodesource.com/node_12.x xenial main'
+
+# - name: install nodejs and npm
+#   become: yes
+#   apt: 
+#     name: ['nodejs', 'nodejs-legacy', 'npm']
+#     state: latest
+#     update_cache: yes
 
 - name: "install pm2"
   become: yes
