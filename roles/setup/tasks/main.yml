@@ -21,27 +21,42 @@
 #     state: latest
 #     update_cache: yes
 
-- name: add noderesources add_ssh_keys
-  become: yes
-  apt_key:
-    url: https://deb.nodesource.com/gpgkey/nodesource.gpg.key
-    state: present
+# - name: add noderesources add_ssh_keys
+#   become: yes
+#   apt_key:
+#     url: https://deb.nodesource.com/gpgkey/nodesource.gpg.key
+#     state: present
 
-- name: add nodesource apt sources
-  become: yes
-  apt_repository:
-    repo: '{{ item }}'
-    state: present
-  with_items:
-    - 'deb https://deb.nodesource.com/node_6.x xenial main'
-    - 'deb-src https://deb.nodesource.com/node_6.x xenial main'
+# - name: add nodesource apt sources
+#   become: yes
+#   apt_repository:
+#     repo: '{{ item }}'
+#     state: present
+#   with_items:
+#     - 'deb https://deb.nodesource.com/node_6.x xenial main'
+#     - 'deb-src https://deb.nodesource.com/node_6.x xenial main'
 
-- name: install nodejs and npm
-  become: yes
-  apt: 
-    name: ['nodejs', 'npm']
-    state: latest
-    update_cache: yes
+# - name: install nodejs and npm
+#   become: yes
+#   apt: 
+#     name: ['nodejs', 'npm']
+#     state: latest
+#     update_cache: yes
+
+- name: ensure make is installed
+  apt: pkg=make state=latest
+
+- name: ensure git is installed
+  apt: pkg=git-core state=latest
+
+- name: download n
+  git: repo="https://github.com/visionmedia/n" dest=/tmp/n
+
+- name: install n
+  command: make -C /tmp/n
+
+- name: install node
+  command: n stable
 
 - name: "install pm2"
   become: yes
