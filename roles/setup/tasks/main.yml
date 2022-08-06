@@ -39,7 +39,7 @@
 - name: install nodejs and npm
   become: yes
   apt: 
-    name: ['nodejs', 'nodejs-legacy', 'npm']
+    name: ['nodejs', 'npm']
     state: latest
     update_cache: yes
 
