@@ -8,7 +8,13 @@ orbs:
 commands:
   destroy_environment:
     steps:
-      - checkout
+      - run:
+          name: Install and configure aws cli
+          command: |
+            apk add --no-cache python3 py3-pip
+            pip3 install --upgrade pip
+            pip3 install --no-cache-dir awscli
+            rm -rf /var/cache/apk/*             
       - run:
           name: Destroy environment
           when: on_fail
@@ -56,14 +62,7 @@ jobs:
     steps:
       - run:
           name: Test jobs
-          command: return 1
-      - run:
-          name: Install and configure aws cli
-          command: |
-            apk add --no-cache python3 py3-pip
-            pip3 install --upgrade pip
-            pip3 install --no-cache-dir awscli
-            rm -rf /var/cache/apk/*           
+          command: return 1          
       - destroy_environment
 
       # - run: apk add --update curl
