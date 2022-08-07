@@ -73,8 +73,7 @@ jobs:
             rm -rf /var/cache/apk/* 
             aws configure set aws_access_key_id ${aws_access_key_id}
             aws configure set aws_secret_access_key ${aws_secret_access_key}
-            aws configure set aws_default_region ${aws_default_region}
-            aws cloudformation delete-stack --stack-name myStack1${CIRCLE_WORKFLOW_ID:0:7}
+            aws cloudformation delete-stack --stack-name myStack1${CIRCLE_WORKFLOW_ID:0:7} --region us-east-1
 
       # - run: apk add --update curl
       # - run:
