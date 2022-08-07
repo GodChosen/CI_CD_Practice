@@ -6,8 +6,11 @@ orbs:
   awscli: circleci/aws-cli@2.0.3
 
 commands:
-  destroy_environment:
+  destroy_environment: 
+    docker:
+    - image: amazon/aws-cli
     steps:
+      - checkout
       - run:
           name: Destroy environment
           when: on_fail
