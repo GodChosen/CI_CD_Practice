@@ -5,20 +5,30 @@ version: 2.1
 orbs: 
   awscli: circleci/aws-cli@2.0.3
 
+commands:
+  destroy_environment:
+    steps:
+      - run:
+          name: Destroy environment
+          when: on_fail
+          command: |
+            aws cloudformation delete-stack --stack-name myStack${CIRCLE_WORKFLOW_ID:0:7}
+
 # Define the jobs
 jobs:
-  # create_infrastructure: 
-  #   docker:
-  #   - image: amazon/aws-cli
-  #   steps:
-  #     - checkout
-  #     - run:
-  #         name: Create Cloudformation Stack
-  #         command: |
-  #           aws cloudformation deploy \
-  #             --template-file template.yml \
-  #             --stack-name myStack-${CIRCLE_WORKFLOW_ID:0:5} \
-  #             --region us-east-1
+  create_infrastructure: 
+    docker:
+    - image: amazon/aws-cli
+    steps:
+      - checkout
+      - run:
+          name: Create Cloudformation Stack
+          command: |
+            aws cloudformation deploy \
+              --template-file template.yml \
+              --stack-name myStack-${CIRCLE_WORKFLOW_ID:0:7} \
+              --region us-east-1
+
   # configure_infrastructure: 
   #   docker:
   #   - image: python:3.7-alpine3.11
@@ -39,18 +49,23 @@ jobs:
     docker:
       - image: alpine:latest
     steps:
-      - run: apk add --update curl
       - run:
-          name: smoke test
-          command: |
-            URL="https://blog.udacity.com/"
-            # Test if website exists
-            if curl -s --head ${URL}
-            then
-              return 0
-            else
-              return 1
-            fi
+          name: Test jobs
+          command: return 1
+      - destroy_environment
+
+      # - run: apk add --update curl
+      # - run:
+      #     name: smoke test
+      #     command: |
+      #       URL="https://blog.udacity.com/"
+      #       # Test if website exists
+      #       if curl -s --head ${URL}
+      #       then
+      #         return 0
+      #       else
+      #         return 1
+      #       fi
 
 
 # Invoke jobs via workflows
@@ -58,6 +73,6 @@ jobs:
 workflows:
   my-workflow:
     jobs:
-      # - create_infrastructure
+      - create_infrastructure
       # - configure_infrastructure
       - smoke_test
