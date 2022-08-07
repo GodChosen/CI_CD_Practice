@@ -13,6 +13,8 @@ commands:
           name: Destroy environment
           when: on_fail
           command: |
+            aws configure set aws_access_key_id ${aws_access_key_id}
+            aws configure set aws_secret_access_key ${aws_secret_access_key}
             aws cloudformation delete-stack --stack-name myStack1${CIRCLE_WORKFLOW_ID:0:7}
 
 # Define the jobs
@@ -51,11 +53,17 @@ jobs:
   smoke_test:
     docker:
       - image: alpine:latest
-      - image: amazon/aws-cli
     steps:
       - run:
           name: Test jobs
           command: return 1
+      - run:
+          name: Install and configure aws cli
+          command: |
+            apk add --no-cache python3 py3-pip
+            pip3 install --upgrade pip
+            pip3 install --no-cache-dir awscli
+            rm -rf /var/cache/apk/*           
       - destroy_environment
 
       # - run: apk add --update curl
