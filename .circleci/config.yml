@@ -6,9 +6,7 @@ orbs:
   awscli: circleci/aws-cli@2.0.3
 
 commands:
-  destroy_environment: 
-    docker:
-    - image: amazon/aws-cli
+  destroy_environment:
     steps:
       - checkout
       - run:
@@ -51,6 +49,7 @@ jobs:
   smoke_test:
     docker:
       - image: alpine:latest
+      - image: amazon/aws-cli
     steps:
       - run:
           name: Test jobs
